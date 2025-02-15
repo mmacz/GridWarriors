@@ -2,7 +2,7 @@ from conan import ConanFile
 from conan.tools.cmake import (
     CMake,
     CMakeToolchain,
-    cmake_layout
+    cmake_layout,
 )
 
 class GridWarriors(ConanFile):
@@ -19,6 +19,7 @@ class GridWarriors(ConanFile):
     requires = [
         "poco/1.13.3",
         "gtest/1.15.0",
+        "log.c/cci.20200620",
     ]
 
     def generate(self):
