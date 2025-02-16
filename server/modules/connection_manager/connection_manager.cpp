@@ -107,27 +107,27 @@ namespace Modules
     private:
       Poco::Net::ServerSocket _ss;
       Poco::Net::HTTPServer _server;
-      std::shared_ptr<Modules::Logger> _logger;
+      Modules::Logger*_logger;
   };
 
 
   CMImpl::CMImpl(const Config& cfg)
   : _ss{static_cast<Poco::UInt16>(cfg.port)}
   , _server{new WebSocketRequestHandlerFactory(cfg.msgSize), _ss, new Poco::Net::HTTPServerParams}
-  , _logger{std::shared_ptr<Modules::Logger>(reinterpret_cast<Modules::Logger*>(cfg._logger))}
+  , _logger{reinterpret_cast<Modules::Logger*>(cfg._logger)}
   {
-  }
-
-  CMImpl::~CMImpl()
-  {
-    INFO_0(_logger, "Stopping the server...");
-    _server.stop();
   }
 
   void CMImpl::run()
   {
     INFO_1(_logger, "Starting the server at port: ", _server.port());
     _server.start();
+  }
+
+  CMImpl::~CMImpl()
+  {
+    INFO_0(_logger, "Stopping the server...");
+    _server.stop();
   }
 
   ConnectionManager::ConnectionManager(const Config& cfg)
