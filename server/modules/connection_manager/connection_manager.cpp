@@ -83,7 +83,8 @@ namespace Modules
   class WebSocketRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory
   {
     public:
-      WebSocketRequestHandlerFactory(std::size_t bufSize = 1024): _bufSize(bufSize)
+      WebSocketRequestHandlerFactory(std::size_t bufSize = 1024)
+      : _bufSize(bufSize)
       {
       }
 
