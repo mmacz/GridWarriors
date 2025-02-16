@@ -19,7 +19,6 @@ class GridWarriors(ConanFile):
     requires = [
         "poco/1.13.3",
         "gtest/1.15.0",
-        "log.c/cci.20200620",
     ]
 
     def generate(self):
