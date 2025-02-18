@@ -7,6 +7,7 @@ target_link_libraries(connection_manager
     Poco::Net
   PRIVATE
     modules::logger
+    modules::message_handler
 )
 
 add_library(modules::connection_manager ALIAS connection_manager)

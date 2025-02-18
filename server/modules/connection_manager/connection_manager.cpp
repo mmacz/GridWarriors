@@ -15,30 +15,8 @@
 #include "Poco/Net/WebSocket.h"
 
 #include "connection_manager.h"
+#include "message_handler.h"
 #include "logger.h"
-
-#define INFO_0(logger, msg) \
-{ \
-  if (_logger) { \
-    _logger->log(Modules::LogLevel::INFO, msg); \
-  } \
-}
-
-#define INFO_1(logger, msg, param) \
-{ \
-  if (_logger) { \
-    std::string log_msg = msg + std::to_string(param); \
-    _logger->log(Modules::LogLevel::INFO, log_msg); \
-  } \
-}
-
-#define ERROR(logger, msg) \
-{ \
-  if (_logger) { \
-    std::string log_msg = msg + std::to_string(param); \
-    _logger->log(Modules::LogLevel::ERROR, log_msg); \
-  } \
-}
 
 namespace Modules
 {
@@ -57,8 +35,11 @@ namespace Modules
         int n;
         do {
             n = ws.receiveFrame(buffer.begin(), static_cast<int>(buffer.size()), flags);
-            ws.sendFrame(buffer.begin(), n, flags);
         } while(n > 0 || (flags & Poco::Net::WebSocket::FRAME_OP_BITMASK) != Poco::Net::WebSocket::FRAME_OP_CLOSE);
+        // MessageHandler
+        Message msg = MessageHandler::get_message(buffer);
+        // ws.sendFrame(buffer.begin(), n, flags);
+        auto msgSize = MessageHandler::set_message(msg, buffer);
       }
       catch(Poco::Net::WebSocketException& exc) {
         switch(exc.code()) {
